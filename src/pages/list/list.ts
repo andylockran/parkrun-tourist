@@ -9,7 +9,7 @@ import { EventModel } from '../../models/event.model';
 export class ListPage {
   selectedItem: any;
   icons: string[];
-  items: Array<EventModel>;
+  items: any[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param

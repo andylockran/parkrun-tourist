@@ -19,14 +19,14 @@ export class EventsProvider {
   constructor(public http: Http) {
     console.log('Hello EventsProvider Provider');
     //this.http.get('http://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml').subscribe(data => {
-      this.http.get('http://localhost:8100/assets/geo.xml').subscribe(data => {
-      this.jsondata = xml2js.parseString(data);
-      this.events = data.json();
-    })
+    this.events = this.http.get('http://localhost:8100/assets/geo.json')
+    .subscribe(data => {
+      this.events = data.json().geo.e;
+    });
   }
 
   getEvents() {
-    console.log(this.events);
     return this.events;
   }
+
 }

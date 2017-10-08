@@ -6,12 +6,20 @@ import { EventsProvider } from '../../providers/events/events';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  
+  public events: any[];
 
-  constructor(public navCtrl: NavController, public events: EventsProvider) {
-
+  constructor(public navCtrl: NavController, public eventsp: EventsProvider) {
+    this.events = this.eventsp.getEvents()
+    .subscribe(data => {
+      this.events = data.json();
+    });;
+    
   }
 
   getEvents() {
-    this.events.getEvents();
+    this.events = this.eventsp.getEvents();
+    console.log(this.events);
   }
+
 }
