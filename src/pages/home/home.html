@@ -14,12 +14,11 @@
 
 
 <ion-content padding>
-  <button ion-button primary (tap)="getLocation()">Locate me</button>
+  <button *ngIf="!loclong || !loclat" ion-button primary (tap)="getLocation()">Locate me</button>
   <button *ngIf="loclong && !events" ion-button secondary (tap)="getEvents()">Find me a Parkrun!</button>
   <ion-list *ngIf="loclat">
     <ion-item *ngFor="let event of events">
-      {{ event.m }} - {{ event.distance}} miles away.
-      <button ion-button secondary (tap)="getDistance(event.la, event.lo)">Distance?</button>
+      {{ event.m }} - {{ event.distance}} km away.
     </ion-item>
   </ion-list>
 </ion-content>

@@ -14,7 +14,8 @@ export class EventsProvider {
 
   public events;
   public jsondata;
-  public apiurl = "http://localhost:8100/assets/geo.json";
+  //public apiurl = "http://localhost:8100/assets/geo.json";
+  public apiurl = "https://www.andyloughran.co.uk/parkrun/assets/geo.json";
   //let apiurl = "http://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml";
 
   constructor(public http: HttpClient) {
