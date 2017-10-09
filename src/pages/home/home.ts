@@ -50,16 +50,20 @@ export class HomePage {
     });
   }
 
+  deg2rad(deg) {
+    return deg * (Math.PI/180)
+  }
   getDistance(lat, lon) {
     /*Calculates distance in miles from local coords */
-    var radlat1 = Math.PI * this.loclat/180
-    var radlat2 = Math.PI * lat/180
-    var theta = this.loclong - lon;
-    var radtheta = Math.PI * theta/180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    dist = Math.acos(dist);
-    dist = dist * 180/Math.PI;
-    dist = dist * 60 * 1.1515;
-    return dist;
+    var R = 6371;
+    var dlat = this.deg2rad(lat - this.loclat);
+    var dlon = this.deg2rad(lon - this.loclong);
+    var a = 
+    Math.sin(dlat/2) * Math.sin(dlat/2) +
+    Math.cos(this.deg2rad(this.loclat)) * Math.cos(this.deg2rad(lat)) *
+    Math.sin(dlon/2) * Math.sin(dlon/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d
   }
 }
