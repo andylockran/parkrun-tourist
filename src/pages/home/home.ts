@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { EventsProvider } from '../../providers/events/events';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as _ from 'lodash';
@@ -28,7 +28,7 @@ export class HomePage {
   getEvents() {
     this.eventsp.getEvents()
     .then(data => {
-      let locations = data.geo.e;
+      let locations = data['geo']['e'];
       locations.forEach(loc => {
         console.log(loc);
         loc.distance = this.getDistance(loc.la, loc.lo);
@@ -60,7 +60,6 @@ export class HomePage {
     dist = Math.acos(dist);
     dist = dist * 180/Math.PI;
     dist = dist * 60 * 1.1515;
-    console.log(dist);
     return dist;
   }
 }
