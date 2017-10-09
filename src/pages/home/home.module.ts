@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HomePage } from './home';
 import { EventsProvider } from '../../providers/events/events';
+
+import { Geolocation } from '@ionic-native/geolocation';
+
 @NgModule({
   declarations: [
     HomePage,
@@ -10,7 +13,8 @@ import { EventsProvider } from '../../providers/events/events';
     IonicPageModule.forChild(HomePage),
   ],
   providers: [
-    EventsProvider
+    EventsProvider,
+    Geolocation
   ]
 })
 export class HomePageModule {}
