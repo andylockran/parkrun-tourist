@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import * as xml2js from 'xml2js';
 
 /*
   Generated class for the EventsProvider provider.
@@ -15,18 +14,21 @@ export class EventsProvider {
 
   public events;
   public jsondata;
+  public apiurl = "http://localhost:8100/assets/geo.json";
+  //let apiurl = "http://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml";
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     console.log('Hello EventsProvider Provider');
-    //this.http.get('http://www.parkrun.org.uk/wp-content/themes/parkrun/xml/geo.xml').subscribe(data => {
-    this.events = this.http.get('http://localhost:8100/assets/geo.json')
-    .subscribe(data => {
-      this.events = data.json().geo.e;
-    });
   }
 
   getEvents() {
-    return this.events;
+    return new Promise(resolve => {
+      this.http.get(this.apiurl).subscribe(data => {
+        resolve(data);
+      }, err => {
+        console.log(err);
+      });
+    });
   }
 
 }
