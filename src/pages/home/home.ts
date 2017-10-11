@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { EventsProvider } from '../../providers/events/events';
 import { Geolocation } from '@ionic-native/geolocation';
+import { LoadingController } from 'ionic-angular';
 import * as _ from 'lodash';
 /**
  * Generated class for the HomePage page.
@@ -21,38 +22,58 @@ export class HomePage {
   public loclat: any;
   public loclong: any;
 
-  constructor(public navCtrl: NavController, public eventsp: EventsProvider, private geolocation: Geolocation) {
+  constructor(
+    public navCtrl: NavController,
+    public eventsp: EventsProvider,
+    private geolocation: Geolocation,
+    private loading: LoadingController
+  ) {
 
   }
 
   getEvents() {
-    this.eventsp.getEvents()
-    .then(data => {
-      let locations = data['geo']['e'];
-      locations.forEach(loc => {
-        console.log(loc);
-        loc.distance = this.getDistance(loc.la, loc.lo);
-        return loc
+    let loading = this.loading.create({
+      content: 'Finding nearest parkruns...'
+    });
+    loading.present().then(() => {
+      this.eventsp.getEvents()
+      .then(data => {
+        let locations = data['geo']['e'];
+        locations.forEach(loc => {
+          console.log(loc);
+          loc.distance = Math.round(this.getDistance(loc.la, loc.lo));
+          return loc
+        });
+        this.events = _.orderBy(locations, ['distance']);
+        console.log(this.events);
+        loading.dismiss();
       });
-      this.events = _.orderBy(locations, ['distance']);
-      console.log(this.events);
     });
   }
 
   getLocation() {
-    this.geolocation.getCurrentPosition()
-    .then((resp) => {
-      this.loclat = resp.coords.latitude;
-      this.loclong = resp.coords.longitude;
-      console.log(this.loclat, this.loclong);
-    }).catch( err => {
-      console.log('Error getting location', err);
+    let loading = this.loading.create({
+      content: 'Locating...',
+      duration: 1400
+    });
+    loading.present().then(() => {
+      this.geolocation.getCurrentPosition()
+      .then((resp) => {
+        this.loclat = resp.coords.latitude;
+        this.loclong = resp.coords.longitude;
+        console.log(this.loclat, this.loclong);
+        loading.dismiss();
+      }).catch( err => {
+        console.log('Error getting location', err);
+        loading.dismiss();
+      });
     });
   }
 
   deg2rad(deg) {
     return deg * (Math.PI/180)
   }
+
   getDistance(lat, lon) {
     /*Calculates distance in miles from local coords */
     var R = 6371;

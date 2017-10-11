@@ -7,18 +7,29 @@
 <ion-header>
 
   <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Parkruns</ion-title>
+    <ion-buttons end>
+      <button *ngIf="loclong || loclat" ion-button icon-only class="geo" (tap)="getLocation()">
+        <ion-icon name="locate"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <button *ngIf="!loclong || !loclat" ion-button primary (tap)="getLocation()">Locate me</button>
-  <button *ngIf="loclong && !events" ion-button secondary (tap)="getEvents()">Find me a Parkrun!</button>
+  <button *ngIf="!loclong || !loclat" ion-button full color="primary" (tap)="getLocation()">
+    Get location
+  </button>
+  <button *ngIf="loclong && !events" ion-button full color="secondary" (tap)="getEvents()">Find me a Parkrun!</button>
   <ion-list *ngIf="loclat">
     <ion-item *ngFor="let event of events">
-      {{ event.m }} - {{ event.distance}} km away.
+      {{ event.m }} - {{ event.distance }} km away.
     </ion-item>
   </ion-list>
 </ion-content>

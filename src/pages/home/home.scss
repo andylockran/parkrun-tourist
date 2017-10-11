@@ -1,3 +1,5 @@
 page-home {
-
+    .geo {
+        color: map-get($colors, secondary);
+    }
 }
